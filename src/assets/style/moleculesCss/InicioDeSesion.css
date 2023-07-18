@@ -1,0 +1,23 @@
+.estilo1{
+    border-radius: 1rem;
+    background-color: rgba(12, 15, 23, 0.74);
+    height: 75vh;
+}
+.classC{
+    transition: opacity 500ms ease-in 0s; 
+    opacity: 1;
+}
+.sectioncita{
+    background-image: url(../../img/pexelsInicio.webp); 
+    background-size: cover; 
+    background-position: center center;
+    overflow-y: scroll;
+    margin-bottom: 10%;
+}
+.imagenDeFondito{
+    background-image: url(../../img/hackerImagen.jpeg); 
+    background-size: cover;
+}
+.textito{
+    text-align: justify;
+}
