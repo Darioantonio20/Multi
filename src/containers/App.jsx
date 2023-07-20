@@ -21,7 +21,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState("");
   const [userInfo, setUserInfo] = useState([]);
   const [alertData, setAlertData] = useState([]);
-  const [newAlert, setNewAlert] = useState([]);
+  const [newAlert, setNewAlert] = useState(false);
 
     return ( 
         <>

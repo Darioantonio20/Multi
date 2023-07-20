@@ -1,47 +1,52 @@
-import React, { useEffect, useContext, createContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import Register from "../components/molecules/Register";
+import IncomingWS from '../components/molecules/IncomingWS'
 import "../assets/style/moleculesCss/Notificaciones.css";
-// Contexts
 import UserContext from "../contexts/UserContext";
 import NewAlertContext from "../contexts/NewAlertContext";
 import UserInfoContext from "../contexts/UserInfoContext";
 import AlertDataContext from "../contexts/AlertDataContext";
 
 function Notificaciones() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
     const {newAlert, setNewAlert} = useContext(NewAlertContext);
     const { userInfo, setUserInfo } = useContext(UserInfoContext);
     const { alertData, setAlertData } = useContext(AlertDataContext);
-  //   const [message, setMessage] = useState("");
-  
-    useEffect(() => {
-    
-      const fetchAlerts = async () => {
-        if(isLoggedIn){
+
+
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      if (isLoggedIn) {
         try {
           const url = `http://localhost:3001/alerts/${userInfo.id}`;
-          
-          console.log(`🤨😶🤐|| 🥓 file: Notificaciones.js:23 🥓 fetchAlerts 🥓 userInfo||`, userInfo)
-          console.log("🤨😶🤐 ~ file: InicioDeSesion.js:40 ~ fetchAlerts ~ url||", url)
           const response = await fetch(url);
-          console.log("🤨😶🤐 ~ file: InicioDeSesion.js:42 ~ fetchAlerts ~ response||", response)
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-      
+
+      if (!response.ok) throw new Error("Failed to fetch data");
+
           const data = await response.json();
-          setAlertData(data.data.alert)
-          console.log("🤨😶🤐 ~ file: InicioDeSesion.js:49 ~ fetchAlerts ~ data.data.alert||", data.data.alert)
+          setAlertData(data.data.alert);
         } catch (error) {
           console.error("Error:", error);
         }
-      }else{console.log("Not posible");}
-      };
-      
-      fetchAlerts();
-    }, [isLoggedIn]);
+      }
+    };
 
+    fetchAlerts();
+  }, [isLoggedIn]);
 
+  useEffect(() => {
+    
+    const socket = new WebSocket("localhost:4000");
+    
+    socket.addEventListener("message", (event) => {
+      const newMessage = event.data; 
+      setNewAlert(JSON.parse(newMessage)); 
+    });
+
+    return () => {
+      socket.close();
+    };
+  }, [setNewAlert]); 
   // useEffect(() => {
   //   const socket = new WebSocket("wss://api.example.com");
 
@@ -54,30 +59,45 @@ function Notificaciones() {
   //     socket.close();
   //   };
   // }, []);
-
-    return ( 
+  return (
+    <>
+      <section className="wrapper">
+        {Array.isArray(newAlert)?
+        <>{/* <IncomingWS key={newAlert.id} alert={newAlert}/> */}</>:
         <>
-        <section className="wrapper">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Identificador</th>
-                <th scope="col">Tipo de alerta</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Severidad</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Usuarios notificados</th>
-              </tr>
-            </thead>
-            <tbody>
-            {alertData.map((alert) => (
+        <h1>HELLO</h1>
+        </>}
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Identificador</th>
+              <th scope="col">Tipo de alerta</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Severidad</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Usuarios notificados</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.isArray(alertData) &&
+              alertData
+                .filter((alert) => parseInt(alert.status) !== 1)
+                .map((alert) => 
+                <>
+                {console.log(`🤨😶🤐|| 🥓 file: Notificaciones.jsx:86 🥓 Notificaciones 🥓 alert||`, alert)}
                 <Register key={alert.id} alert={alert} />
-              ))}
-            </tbody>
-          </table>
-        </section>
-      </>
-     );
+                </>
+                )}
+          </tbody>  
+        </table>
+      </section>
+    </>
+  );
 }
 
 export default Notificaciones;
+
+
+  
+
+    

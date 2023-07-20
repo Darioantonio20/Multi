@@ -1,74 +1,40 @@
-import { Link,useNavigate } from "react-router-dom";
-import React, { useContext, useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import UserInfoContext from "../contexts/UserInfoContext";
 import AlertDataContext from "../contexts/AlertDataContext";
 import "../assets/style/moleculesCss/InicioDeSesion.css";
 
 function InicioDeSesion() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
-    const { userInfo, setUserInfo } = useContext(UserInfoContext);
-    const { alertData, setAlertData } = useContext(AlertDataContext);
-    const navigate = useNavigate();
-    const formDataL = useRef();
-  
-  
-  
-    const HandlerClickLogin = async (e) => {
-      e.preventDefault();
-    //  setIsLoggedIn(true); 
-    //  navigate("/Notificaciones")
-  
-      const formData = new FormData(formDataL.current);
-      const mail = formData.get("mail");
-      const password = formData.get("password");
-      console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.js:25 🥓 HandlerClickLogin 🥓 password||`, password)
-  
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { setUserInfo } = useContext(UserInfoContext);
+  const { setAlertData } = useContext(AlertDataContext);
+  const navigate = useNavigate();
+  const formDataL = useRef();
+
+  const HandlerClickLogin = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(formDataL.current);
+    const mail = formData.get("mail");
+    const password = formData.get("password");
+
+    try {
       const url = `http://localhost:3002/users/${mail}/${password}`;
-      
-      fetch(url)
-      .then((response) => {
-        console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.js:31 🥓 .then 🥓 response||`, response)
-        if (response.ok) {
-          return response.json();
-          setIsLoggedIn(response.ok);
-        } else {
-          throw new Error("Network response was not ok.");
-        }
-      })
-      .then((data) => {
-        console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.js:38 🥓 .then 🥓 data||`, data)
-        if(data.status=="success")
-        setIsLoggedIn(true);
-        setUserInfo(data.data);
-        // isLoggedIn?navigate("/Notificaciones"):navigate("/InicioDeSesion")
-        
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("An error occurred during login.");
-      });
-      // console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.jsx:50 🥓 HandlerClickLogin 🥓 isLoggedIn||`, isLoggedIn)
+      const response = await fetch(url);
 
-    };
-  
-    
-    
-    useEffect(() => {
-      setTimeout(() => {
-        
-        console.log(`°¬0`)
-        if(isLoggedIn){
-          navigate("/Notificaciones");
-          console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.jsx:61 🥓 useEffect 🥓 Notificaciones||`)
-        }else{
-          navigate("/InicioDeSesion");
-          console.log(`🤨😶🤐|| 🥓 file: InicioDeSesion.jsx:64 🥓 useEffect 🥓 InicioDeSesion||`)
-        }
-        
-      }, 1000);
-    }, [isLoggedIn]);
+      if (!response.ok) throw new Error("Network response was not ok.");
 
+      const data = await response.json();
+      data.status === "success" ? setIsLoggedIn(true) : setIsLoggedIn(false);
+      setUserInfo(data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    isLoggedIn ? navigate("/Notificaciones") : navigate("/InicioDeSesion");
+  }, [isLoggedIn]);
     return ( 
         <>
             <section className="imagenDeFondito vh-100 gradient-custom">
