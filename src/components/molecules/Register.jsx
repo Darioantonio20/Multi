@@ -1,7 +1,7 @@
 import React from "react";
 
 function Register(props) {
-  const { id, type, description, severity, dateTime, affectedUserId } = props.alert;
+  const { id, type, status,  description, severity, dateTime, affectedUserId } = props.alert;
 
   const HandlerClickUpdate = async (e, id) => {
     e.preventDefault();
@@ -36,13 +36,13 @@ function Register(props) {
   return (
     <tr key={id}>
       <td>{id}</td>
-      <td>{type}</td>
+      <td>{status}</td>
       <td>{description}</td>
       <td>{severity}</td>
       <td>{dateTime}</td>
       <td>{affectedUserId}</td>
       <td>
-        <button onClick={(e) => HandlerClickUpdate(e, id)} className="btn btn-outline-light btn-lg px-5">
+        <button onClick={(e) => HandlerClickUpdate(e, id)} >
           Update
         </button>
       </td>

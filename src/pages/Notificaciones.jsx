@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import Register from "../components/molecules/Register";
 import IncomingWS from '../components/molecules/IncomingWS'
+import io  from 'socket.io-client'
 import "../assets/style/moleculesCss/Notificaciones.css";
 import UserContext from "../contexts/UserContext";
 import NewAlertContext from "../contexts/NewAlertContext";
@@ -12,9 +13,10 @@ function Notificaciones() {
     const {newAlert, setNewAlert} = useContext(NewAlertContext);
     const { userInfo, setUserInfo } = useContext(UserInfoContext);
     const { alertData, setAlertData } = useContext(AlertDataContext);
+    const socket = io('http://18.233.107.70:4000');
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchAlerts = async () => {
       if (isLoggedIn) {
         try {
@@ -32,21 +34,15 @@ function Notificaciones() {
     };
 
     fetchAlerts();
-  }, [isLoggedIn]);
+  }, [isLoggedIn]);*/
 
-  useEffect(() => {
-    
-    const socket = new WebSocket("localhost:4000");
-    
-    socket.addEventListener("message", (event) => {
-      const newMessage = event.data; 
-      setNewAlert(JSON.parse(newMessage)); 
-    });
-
-    return () => {
-      socket.close();
-    };
-  }, [setNewAlert]); 
+  useEffect (() => {
+    socket.on('alert', alert => setNewAlert(alert));
+    return ( ) => {
+    socket.off('alert', alert => {console.log(alert)})
+    }
+}, [])
+  
   // useEffect(() => {
   //   const socket = new WebSocket("wss://api.example.com");
 
