@@ -1,15 +1,17 @@
 import React, {  useContext } from "react";
 
 import UserContext from "../../contexts/UserContext";
+import NewAlertContext from "../../contexts/NewAlertContext";
 
 function IncomingWS(props) {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const {  description, severity, affectedUserId } = props.alert;
+  const {newAlert, setNewAlert} = useContext(NewAlertContext);
 
   const HandlerClickUpdate = async (e, id) => {
     e.preventDefault();
    alert("Call the police succesfully done")
-   isLoggedIn(setIsLoggedIn);
+   isLoggedIn(true);
    alert("We'll update your infomation now")
    //Probably we can change a conte in here a paint all of the tab
   };

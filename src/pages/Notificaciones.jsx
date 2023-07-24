@@ -26,7 +26,8 @@ function Notificaciones() {
       if (!response.ok) throw new Error("Failed to fetch data");
 
           const data = await response.json();
-          setAlertData(data.data.alert);
+          const reversedAlerts = data.data.alert.reverse();
+          setAlertData(reversedAlerts);
         } catch (error) {
           console.error("Error:", error);
         }
@@ -34,7 +35,7 @@ function Notificaciones() {
     };
 
     fetchAlerts();
-  }, [isLoggedIn]);
+  }, [newAlert]);
 
   useEffect (() => {
     socket.on('alert', alert => setNewAlert(JSON.parse(alert)));
