@@ -28,7 +28,7 @@ function IncomingWS(props) {
             </tr>
           </thead>
           <tbody>
-            <tr key={id}>
+            <tr key={affectedUserId}>
                 {/* <td>{id}</td>
                 <td>{type}</td> */}
                 <td>{description}</td>
@@ -36,7 +36,7 @@ function IncomingWS(props) {
                 {/* <td>{dateTime}</td> */}
                 <td>{affectedUserId}</td>
                 <td>
-                    <button onClick={(e) => HandlerClickUpdate(e, id)} className="btn btn-outline-light btn-lg px-5">
+                    <button onClick={(e) => HandlerClickUpdate(e, affectedUserId)} className="btn btn-outline-light btn-lg px-5">
                     LOOK
                     </button>
                 </td>

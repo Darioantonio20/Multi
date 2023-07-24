@@ -49,7 +49,7 @@ function Notificaciones() {
   return (
     <>
       <section className="wrapper">
-        {newAlert?
+        {newAlert && (newAlert.affectedUserId == userInfo.id)?
         <> 
         {/* Hacer un ejemplo de alarma si es posible o algo que de a conocer que hay 
         una nueva alarma
