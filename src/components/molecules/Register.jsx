@@ -15,7 +15,7 @@ function Register(props) {
     };
 
     try {
-      const url = `http://localhost:3001/alerts`; 
+      const url = `http://54.161.75.228:3000/alerts`; 
       const options = {
         method: "PUT",
         headers: {

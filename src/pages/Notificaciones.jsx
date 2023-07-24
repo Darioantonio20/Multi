@@ -20,7 +20,7 @@ function Notificaciones() {
     const fetchAlerts = async () => {
       if (isLoggedIn) {
         try {
-          const url = `http://localhost:3001/alerts/${userInfo.id}`;
+          const url = `http://54.161.75.228:3000/alerts/${userInfo.id}`;
           const response = await fetch(url);
 
       if (!response.ok) throw new Error("Failed to fetch data");

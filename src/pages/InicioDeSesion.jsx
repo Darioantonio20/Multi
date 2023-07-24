@@ -19,7 +19,7 @@ function InicioDeSesion() {
     const password = formData.get("password");
 
     try {
-      const url = `http://localhost:3002/users/${mail}/${password}`;
+      const url = `http://3.222.83.255:3000/users/${mail}/${password}`;
       const response = await fetch(url);
 
       if (!response.ok) throw new Error("Network response was not ok.");
