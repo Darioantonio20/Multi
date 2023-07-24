@@ -1,8 +1,10 @@
-import React from "react";
+import UserContext from "../../contexts/UserContext";
+import React, {  useContext } from "react";
 
 function Register(props) {
-  const { id, type, status,  description, severity, dateTime, affectedUserId } = props.alert;
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
+  const { id, type, status,  description, severity, dateTime, affectedUserId } = props.alert;
   const HandlerClickUpdate = async (e, id) => {
     e.preventDefault();
     console.log(`🤨😶🤐|| 🥓 file: Register.js:7 🥓 HandlerClickUpdate 🥓 id||`, id);
@@ -25,7 +27,7 @@ function Register(props) {
       const response = await fetch(url, options);
 
       if (!response.ok) throw new Error("Failed to update data");
-
+      setIsLoggedIn(isLoggedIn);
       const result = await response.json();
       console.log("Updated data:", result);
     } catch (error) {
@@ -43,7 +45,7 @@ function Register(props) {
       <td>{affectedUserId}</td>
       <td>
         <button onClick={(e) => HandlerClickUpdate(e, id)} >
-          Update
+          Eliminar
         </button>
       </td>
     </tr>

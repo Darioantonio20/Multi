@@ -1,11 +1,16 @@
-import React from "react";
+import React, {  useContext } from "react";
+
+import UserContext from "../../contexts/UserContext";
 
 function IncomingWS(props) {
-  const { id, type, description, severity, dateTime, affectedUserId } = props.alert;
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const {  description, severity, affectedUserId } = props.alert;
 
   const HandlerClickUpdate = async (e, id) => {
     e.preventDefault();
    alert("Call the police succesfully done")
+   isLoggedIn(setIsLoggedIn);
+   alert("We'll update your infomation now")
    //Probably we can change a conte in here a paint all of the tab
   };
 
@@ -14,21 +19,21 @@ function IncomingWS(props) {
      <table className="table">
           <thead>
             <tr>
-              <th scope="col">Identificador</th>
-              <th scope="col">Tipo de alerta</th>
+             {/*  <th scope="col">Identificador</th>
+              <th scope="col">Tipo de alerta</th> */}
               <th scope="col">Descripción</th>
               <th scope="col">Severidad</th>
-              <th scope="col">Fecha</th>
+              {/* <th scope="col">Fecha</th> */}
               <th scope="col">Usuarios notificados</th>
             </tr>
           </thead>
           <tbody>
             <tr key={id}>
-                <td>{id}</td>
-                <td>{type}</td>
+                {/* <td>{id}</td>
+                <td>{type}</td> */}
                 <td>{description}</td>
                 <td>{severity}</td>
-                <td>{dateTime}</td>
+                {/* <td>{dateTime}</td> */}
                 <td>{affectedUserId}</td>
                 <td>
                     <button onClick={(e) => HandlerClickUpdate(e, id)} className="btn btn-outline-light btn-lg px-5">

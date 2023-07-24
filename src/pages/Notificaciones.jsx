@@ -16,7 +16,7 @@ function Notificaciones() {
     const socket = io('http://18.233.107.70:4000');
 
 
-  /*useEffect(() => {
+  useEffect(() => {
     const fetchAlerts = async () => {
       if (isLoggedIn) {
         try {
@@ -34,35 +34,33 @@ function Notificaciones() {
     };
 
     fetchAlerts();
-  }, [isLoggedIn]);*/
+  }, [isLoggedIn]);
 
   useEffect (() => {
-    socket.on('alert', alert => setNewAlert(alert));
+    socket.on('alert', alert => setNewAlert(JSON.parse(alert)));
     return ( ) => {
-    socket.off('alert', alert => {console.log(alert)})
+    socket.off('alert', alert => {
+      console.log(alert)
+    })
     }
-}, [])
+}, [isLoggedIn])
   
-  // useEffect(() => {
-  //   const socket = new WebSocket("wss://api.example.com");
-
-  //   socket.addEventListener("message", (event) => {
-  //     setMessage(event.data); // Update state with incoming messages from WebSocket
-  //   });
-
-  //   return () => {
-  //     // Cleanup function to close the WebSocket on component unmount
-  //     socket.close();
-  //   };
-  // }, []);
+  
   return (
     <>
       <section className="wrapper">
-        {Array.isArray(newAlert)?
-        <>{/* <IncomingWS key={newAlert.id} alert={newAlert}/> */}</>:
+        {newAlert?
+        <> 
+        {/* Hacer un ejemplo de alarma si es posible o algo que de a conocer que hay 
+        una nueva alarma
+        */}
+        <h1>Hemos detectado un nuevo movimiento</h1>
+        <h2>Por favor has algo</h2>
+        <IncomingWS key={newAlert.id} alert={newAlert}/> </>:
         <>
         <h1>HELLO</h1>
-        </>}
+        </>
+        }
         <table className="table">
           <thead>
             <tr>
@@ -80,7 +78,6 @@ function Notificaciones() {
                 .filter((alert) => parseInt(alert.status) !== 1)
                 .map((alert) => 
                 <>
-                {console.log(`🤨😶🤐|| 🥓 file: Notificaciones.jsx:86 🥓 Notificaciones 🥓 alert||`, alert)}
                 <Register key={alert.id} alert={alert} />
                 </>
                 )}
